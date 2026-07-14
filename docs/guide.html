@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NeetCode 150 User Guide</title>
+<style>
+:root{
+  --accent:#4338ca; --accent-2:#0891b2; --ink:#1f2937; --muted:#6b7280;
+  --line:#e5e7eb; --soft:#f3f4f6;
+  --tip:#16a34a; --tip-bg:#ecfdf5; --warn:#d97706; --warn-bg:#fffbeb;
+  --note:#2563eb; --note-bg:#eff6ff; --rule:#dc2626; --rule-bg:#fef2f2;
+  --easy:#16a34a; --med:#d97706; --hard:#dc2626; --code-bg:#f3f4f6;
+}
+@page{
+  size:letter; margin:1.7cm 1.9cm 2cm 1.9cm;
+  @bottom-left{content:"NeetCode 150 User Guide"; color:#9ca3af; font:8.5pt "Helvetica Neue",Arial,sans-serif;}
+  @bottom-right{content:counter(page); color:#9ca3af; font:9pt "Helvetica Neue",Arial,sans-serif;}
+}
+@page cover{ margin:0; @bottom-left{content:none} @bottom-right{content:none} }
+*{box-sizing:border-box}
+body{font-family:"Helvetica Neue",Arial,sans-serif; color:var(--ink); font-size:10.5pt; line-height:1.5; margin:0;}
+h1,h2,h3,h4{margin:0}
+p{margin:7px 0}
+a{color:inherit}
+code{font-family:"SF Mono",Menlo,Consolas,monospace; font-size:9pt; background:var(--code-bg); padding:0 3px; border-radius:3px;}
+.codebox{background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:9px 12px;
+  font-family:"SF Mono",Menlo,Consolas,monospace; font-size:8.7pt; line-height:1.5; white-space:pre-wrap; margin:9px 0;}
+
+/* cover */
+.cover{page:cover; height:100vh; background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:#fff; padding:3.4cm 2.4cm 2.4cm 2.4cm;}
+.cover .kicker{font-size:12pt; letter-spacing:.18em; text-transform:uppercase; opacity:.85;}
+.cover h1{font-size:40pt; line-height:1.05; margin:.5cm 0 .35cm 0;}
+.cover .sub{font-size:15pt; opacity:.95; max-width:15cm;}
+.chips{margin-top:1.4cm; display:flex; gap:12px;}
+.chip{background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.35);
+  border-radius:10px; padding:12px 16px; font-size:11pt;}
+.chip b{display:block; font-size:20pt; line-height:1.1;}
+.cover .foot{position:absolute; bottom:2.2cm; font-size:11pt; opacity:.9;}
+
+/* section headers */
+h2.sec{font-size:17pt; color:var(--accent); margin:2px 0 4px 0; padding-bottom:6px; border-bottom:2px solid var(--line);}
+h2.sec .num{display:inline-block; min-width:1.5em; height:1.5em; line-height:1.5em; text-align:center;
+  background:var(--accent); color:#fff; border-radius:7px; font-size:.72em; margin-right:.45em; vertical-align:2px;}
+h3.sub{font-size:12.5pt; color:var(--accent); margin:14px 0 2px 0;}
+.lead{color:var(--muted); font-size:11pt; margin:2px 0 10px 0;}
+
+/* callouts */
+.callout{border-radius:9px; padding:11px 14px 11px 14px; margin:12px 0; border-left:5px solid var(--muted);
+  background:#f9fafb; break-inside:avoid;}
+.callout .h{font-weight:700; margin-bottom:2px;}
+.callout.tip{border-color:var(--tip); background:var(--tip-bg);}
+.callout.warn{border-color:var(--warn); background:var(--warn-bg);}
+.callout.note{border-color:var(--note); background:var(--note-bg);}
+.callout.rule{border-color:var(--rule); background:var(--rule-bg);}
+.callout.big{padding:16px 18px; font-size:11.5pt;}
+
+/* cards */
+.cardrow{display:flex; gap:12px; margin:12px 0;}
+.card{flex:1; border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:9px;
+  padding:11px 13px; background:#fff; break-inside:avoid;}
+.card h4{color:var(--accent); font-size:11pt; margin-bottom:4px;}
+.card.mono h4{font-family:"SF Mono",Menlo,Consolas,monospace; font-size:10pt;}
+
+/* badges */
+.badge{display:inline-block; padding:1px 9px; border-radius:10px; color:#fff; font-size:8.5pt; font-weight:700;}
+.badge.easy{background:var(--easy)} .badge.med{background:var(--med)} .badge.hard{background:var(--hard)}
+.tag{display:inline-block; font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:.04em;
+  color:var(--accent); background:#eef2ff; padding:1px 7px; border-radius:4px; margin-right:6px;}
+.tag.you{color:#166534; background:#dcfce7} .tag.tool{color:#9a3412; background:#ffedd5}
+
+/* steps */
+.step{display:flex; gap:13px; margin:11px 0; break-inside:avoid;}
+.step .n{flex:0 0 auto; width:28px; height:28px; border-radius:50%; background:var(--accent); color:#fff;
+  font-weight:700; text-align:center; line-height:28px;}
+.step .b{flex:1}
+.step .b .t{font-weight:700;}
+
+/* table */
+table{border-collapse:collapse; width:100%; margin:10px 0; font-size:10pt;}
+th,td{border:1px solid var(--line); padding:6px 9px; text-align:left; vertical-align:top;}
+th{background:var(--soft); color:var(--ink);}
+
+/* toc */
+.toc{margin-top:6px}
+.toc div{padding:4px 0; border-bottom:1px dotted var(--line);}
+.toc a{text-decoration:none;}
+.toc a::after{content:target-counter(attr(href),page); float:right; color:var(--muted);}
+.toc .l0{font-weight:700;}
+.toc .l1{padding-left:1.4em; color:var(--muted); font-size:9.8pt;}
+
+/* primers */
+.primer{border:1px solid var(--line); border-radius:11px; margin:13px 0; overflow:hidden; break-inside:avoid;}
+.primer .ph{padding:9px 14px; color:#fff; font-size:13pt; font-weight:700;}
+.primer .pb{padding:11px 14px;}
+.primer .pb p{margin:6px 0;}
+.primer .row2{display:flex; gap:14px;}
+.primer .row2>div{flex:1;}
+.mini{font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted);}
+.watch{background:var(--warn-bg); border-left:4px solid var(--warn); border-radius:6px; padding:7px 10px; margin-top:8px;}
+
+.pagebreak{break-before:page;}
+.section{break-before:page;}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="cover">
+  <div class="kicker">Learn algorithms by hand</div>
+  <h1>NeetCode 150<br>User Guide</h1>
+  <div class="sub">A friendly walkthrough of this practice repo for a complete beginner. What every folder is for, where to work and exactly how a day of practice goes.</div>
+  <div class="chips">
+    <div class="chip"><b>150</b>problems</div>
+    <div class="chip"><b>18</b>topics</div>
+    <div class="chip"><b>1</b>rule: no AI solutions</div>
+  </div>
+  <div class="foot">Read section 1 and 3 first, then follow the daily loop in section 5.</div>
+</section>
+
+<!-- ============ TOC ============ -->
+<section class="section">
+  <h2 class="sec"><span class="num">&#9776;</span>Contents</h2>
+  <div class="toc">
+    <div><a class="l0" href="#s1">1. What this repo is</a></div>
+    <div><a class="l0" href="#s2">2. A tour of the folders</a></div>
+    <div><a class="l0" href="#s3">3. Where to work</a></div>
+    <div><a class="l0" href="#s4">4. The tools</a></div>
+    <div><a class="l0" href="#s5">5. A day of practice (the daily loop)</a></div>
+    <div><a class="l0" href="#s6">6. Every week (the weekly loop)</a></div>
+    <div><a class="l0" href="#s7">7. How to approach any problem</a></div>
+    <div><a class="l0" href="#s8">8. The 18 topics explained</a></div>
+    <div><a class="l0" href="#s9">9. Getting unstuck</a></div>
+    <div><a class="l0" href="#s10">10. When something breaks</a></div>
+  </div>
+</section>
+
+<!-- ============ 1 ============ -->
+<section class="section" id="s1">
+  <h2 class="sec"><span class="num">1</span>What this repo is</h2>
+  <p class="lead">A place to work through 150 well-known coding problems by hand, with small tools that keep you honest.</p>
+
+  <p>This repo helps you practise the <b>NeetCode 150</b>, a popular list of 150 coding interview problems sorted into 18 topics. It is a place to learn, not a place to store answers. You write every line of every solution yourself. The tools here set up files, run your own tests, track what you have finished and remind you what to revisit. They never write the answer.</p>
+
+  <div class="callout rule big">
+    <div class="h">&#128683; The one rule: no AI-written solutions, ever</div>
+    Not the full answer, not one line, not pseudocode. If you ask the assistant to solve a problem, it will say no and offer a hint instead. This is the whole point of the repo. The rules live in <code>CLAUDE.md</code>.
+  </div>
+
+  <p><b>Why such a strict rule?</b> The learning happens in the struggle. When you work a problem out yourself, you build the pattern recognition that interviews test. If an assistant hands you the code, you get a working file and learn nothing. A tool that solves the problem for you feels like progress while removing the part that teaches you. So the tools here help you think, they do not think for you.</p>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="section" id="s2">
+  <h2 class="sec"><span class="num">2</span>A tour of the folders</h2>
+  <p class="lead">Green means you type into it. Orange means a tool writes it, so leave it alone.</p>
+
+  <table>
+    <tr><th>Folder or file</th><th>What it is</th><th>Who owns it</th></tr>
+    <tr><td>The 18 topic folders<br><code>arrays-hashing</code>, <code>trees</code>, and so on</td><td>Your solution files live here, one file per problem.</td><td><span class="tag you">You edit</span></td></tr>
+    <tr><td><code>redo/</code></td><td>Fresh re-attempts of problems you already solved, so a redo does not overwrite the original.</td><td><span class="tag you">You edit</span></td></tr>
+    <tr><td><code>templates/problem-template.py</code></td><td>The blank solution file every new problem is copied from.</td><td><span class="tag tool">Tool copies it</span></td></tr>
+    <tr><td><code>helpers/structures.py</code></td><td>Small building blocks for your tests: linked list and tree makers.</td><td><span class="tag you">You use it</span></td></tr>
+    <tr><td><code>scripts/</code></td><td>The five tools you run, plus a <code>lib/</code> of shared code you never run directly.</td><td><span class="tag tool">Tooling</span></td></tr>
+    <tr><td><code>hooks/pre-commit</code></td><td>A safety check git runs for you on every commit.</td><td><span class="tag tool">Tooling</span></td></tr>
+    <tr><td><code>README.md</code></td><td>The front page. Its progress list is written by a tool.</td><td><span class="tag tool">Tool writes it</span></td></tr>
+    <tr><td><code>python-gotchas.md</code></td><td>A running list of Python language traps you hit.</td><td><span class="tag you">You add to it</span></td></tr>
+    <tr><td><code>CLAUDE.md</code></td><td>The rules for the assistant.</td><td><span class="tag tool">Reference</span></td></tr>
+  </table>
+
+  <div class="callout note">
+    <div class="h">&#128161; The <code>.gitkeep</code> files</div>
+    You will see a tiny hidden <code>.gitkeep</code> file in empty folders. It exists only so git can save an otherwise empty folder. You can ignore it.
+  </div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="section" id="s3">
+  <h2 class="sec"><span class="num">3</span>Where to work</h2>
+  <p class="lead">Read the problem on the website. Write and test it here on your computer. Paste it back to the website to submit.</p>
+
+  <div class="cardrow">
+    <div class="card"><h4>1. Read on the site</h4>The problem statement and the official grader live on LeetCode. You cannot copy the grader onto your machine, so you read and finally submit there.</div>
+    <div class="card"><h4>2. Solve here</h4>You write the code, your notes and your tests in this repo, in an editor such as VS Code. Your notes, history and the revisit schedule only exist here.</div>
+    <div class="card"><h4>3. Submit on the site</h4>Once your own tests pass, paste your solution into LeetCode and submit to get the official pass.</div>
+  </div>
+
+  <div class="callout tip">
+    <div class="h">&#9989; You do not need the internet to test</div>
+    Your solution file has its own tests at the bottom (asserts you write). Running the file checks them. Passing your own tests is not the same as passing LeetCode, because you cannot think of every case the grader will, but it catches most mistakes before you submit.
+  </div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="section" id="s4">
+  <h2 class="sec"><span class="num">4</span>The tools</h2>
+  <p class="lead">Two kinds. Slash commands you type to the assistant in chat (they start with <code>/</code>). Scripts you run in the terminal. Run scripts from the top of the repo.</p>
+
+  <h3 class="sub">Slash commands</h3>
+  <div class="cardrow">
+    <div class="card mono"><h4>/new</h4>Sets up a new problem file and starts your timer. Says nothing about how to solve it.</div>
+    <div class="card mono"><h4>/hint</h4>Gives the next hint, one small step at a time. Never the algorithm.</div>
+    <div class="card mono"><h4>/review</h4>Adds edge-case tests and asks about your complexity claims. Never edits your solution.</div>
+  </div>
+  <div class="cardrow">
+    <div class="card mono"><h4>/done</h4>Helps you fill your notes, checks the file, updates the README and commits it.</div>
+    <div class="card mono"><h4>/redo</h4>Picks the oldest problem due for revisit and has you solve it fresh.</div>
+    <div class="card mono"><h4>/quiz</h4>Five quick recall questions from problems you have already solved.</div>
+  </div>
+  <div class="cardrow">
+    <div class="card mono"><h4>/gotcha</h4>Saves a Python language trap to <code>python-gotchas.md</code> so you know it next time.</div>
+    <div class="card" style="border-top-color:transparent; background:#f9fafb;"><h4 style="color:var(--muted)">Tip</h4>Every command restates the no-solutions rule, so it holds even in a long chat.</div>
+  </div>
+
+  <h3 class="sub">Scripts</h3>
+  <table>
+    <tr><th>Run this</th><th>What it does</th></tr>
+    <tr><td><code>python3 scripts/new_problem.py &lt;category&gt; &lt;number&gt; &lt;slug&gt;</code></td><td>Copies the template into a topic folder, pre-filled, and prints your time limit.</td></tr>
+    <tr><td><code>python3 scripts/progress.py</code></td><td>Rewrites the Progress and Revisit lists in the README. Add <code>--check</code> to only verify.</td></tr>
+    <tr><td><code>python3 scripts/check_file.py &lt;path&gt;</code></td><td>The honesty check for one file: notes filled in, values valid, tests pass.</td></tr>
+    <tr><td><code>python3 scripts/flashcards.py</code></td><td>Exports your solved problems to a flashcard CSV you can import into Anki.</td></tr>
+    <tr><td><code>python3 scripts/install_hooks.py</code></td><td>Installs the pre-commit safety check. Run this once at the start.</td></tr>
+  </table>
+
+  <h3 class="sub">The pre-commit hook and CI</h3>
+  <p>Git runs a small check right before it saves a commit. If a solution file is not finished (a note left as TODO, or a failing test), the commit is stopped and you see this:</p>
+  <div class="codebox">FAIL: arrays-hashing/0001-two-sum.py
+  - field 'Pattern' is still TODO/empty
+
+pre-commit: one or more solution files failed the honesty gate.
+Fill in the docstring fields and make the asserts pass, then re-commit.</div>
+  <div class="callout warn">
+    <div class="h">&#9888;&#65039; Do not skip the check</div>
+    You can bypass it with <code>git commit --no-verify</code>, but that defeats the whole point. Fix the listed items and commit again. <b>CI</b> runs the same checks on GitHub after you push, as a backstop, so a local quirk cannot hide a broken file.
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="section" id="s5">
+  <h2 class="sec"><span class="num">5</span>A day of practice</h2>
+  <p class="lead">One problem, start to finish. This is the loop you repeat every day.</p>
+
+  <div class="step"><div class="n">1</div><div class="b"><div class="t">Pick the next problem and read it on the site</div>Open the README, find the next empty checkbox and note its number and slug. Open that problem on LeetCode and read it.</div></div>
+
+  <div class="step"><div class="n">2</div><div class="b"><div class="t">Scaffold the file and start the timer</div>In chat, type:
+    <div class="codebox">/new arrays-hashing 1 two-sum</div>
+    The assistant makes the file and tells you your limit: <span class="badge easy">Easy</span> 25 minutes, &nbsp;<span class="badge med">Medium</span>/<span class="badge hard">Hard</span> 40 minutes. Start a timer.</div></div>
+
+  <div class="step"><div class="n">3</div><div class="b"><div class="t">Open the file and solve it by hand</div>The top is a notes block. The bottom is where your code and tests go. Nothing is solved yet:
+    <div class="codebox">class Solution:
+    pass  # write the method signature from LeetCode yourself
+
+if __name__ == "__main__":
+    # write asserts that call your Solution and check the result
+    pass</div></div></div>
+
+  <div class="step"><div class="n">4</div><div class="b"><div class="t">Run your own tests</div>An assert calls your method and checks the answer. Run the file from the top of the repo:
+    <div class="codebox">python3 arrays-hashing/0001-two-sum.py</div>
+    No output means your asserts passed. A failure shows the line.</div></div>
+
+  <div class="step"><div class="n">5</div><div class="b"><div class="t">Stuck? Ask for one hint</div>Type <code>/hint arrays-hashing/0001-two-sum.py</code>. You get one level. Write down how many hint levels you used.</div></div>
+
+  <div class="step"><div class="n">6</div><div class="b"><div class="t">Review, then finish</div>Run <code>/review &lt;file&gt;</code> for edge-case tests, then <code>/done &lt;file&gt;</code> to fill your notes, check the file, update the README and commit it.</div></div>
+
+  <div class="step"><div class="n">7</div><div class="b"><div class="t">Submit on LeetCode</div>Paste your solution into LeetCode and submit for the official pass.</div></div>
+
+  <div class="callout warn">
+    <div class="h">&#9203; When the timer runs out</div>
+    Stop. Do not keep grinding. Write down where you got stuck, mark the problem to revisit and, if you want, look at the idea through hints (not the code). A problem you could not finish is exactly the kind you want to see again later. Running out of time is data, not failure.
+  </div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="section" id="s6">
+  <h2 class="sec"><span class="num">6</span>Every week</h2>
+  <p class="lead">The daily loop moves you forward. The weekly loop makes it stick.</p>
+
+  <div class="callout note big">
+    <div class="h">&#127919; Spaced repetition is the real trick</div>
+    You do not remember a pattern because you solved it once. You remember it because you met it again, just as you were about to forget it, and had to pull it back. Revisiting on a schedule is what turns a one-time solve into a pattern you own.
+  </div>
+
+  <div class="cardrow">
+    <div class="card"><h4>/redo</h4>A couple of times a week. It picks the oldest problem due for revisit, restates only the problem (no hint about your old solution), and you solve it fresh in <code>redo/</code>. Then you compare the two and talk about what changed.</div>
+    <div class="card"><h4>/quiz</h4>When you finish a topic. Five quick questions drawn only from problems you have already solved, revealed one at a time. Pure recall to keep patterns warm.</div>
+  </div>
+
+  <h3 class="sub">How the revisit date is chosen</h3>
+  <table>
+    <tr><th>When you finish a problem</th><th>You will see it again in</th></tr>
+    <tr><td>You needed a hint, or you marked it to revisit</td><td><b>3 days</b> (came out hard, so it comes back soon)</td></tr>
+    <tr><td>You solved it clean with no hints</td><td><b>14 days</b> (came out easy, so it waits longer)</td></tr>
+  </table>
+  <p>Every time you run <code>progress.py</code>, any problem whose date has arrived shows up in the Revisit list in the README, oldest first.</p>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="section" id="s7">
+  <h2 class="sec"><span class="num">7</span>How to approach any problem</h2>
+  <p class="lead">The same steps, in the same order, every time. With practice it becomes automatic.</p>
+
+  <div class="step"><div class="n">1</div><div class="b"><div class="t">Read it twice, then say it back in your own words</div>If you cannot restate what the input is, what the output is and what makes an answer correct, you do not understand it yet.</div></div>
+  <div class="step"><div class="n">2</div><div class="b"><div class="t">Work two tiny examples by hand</div>On paper, no code. This is where you see the real shape of the problem and the corners the statement hid.</div></div>
+  <div class="step"><div class="n">3</div><div class="b"><div class="t">Say the slow way out loud, and its cost</div>Even "try every pair" counts. Name its time complexity. Now you have a baseline any real answer must beat.</div></div>
+  <div class="step"><div class="n">4</div><div class="b"><div class="t">Find the repeated work, then the structure that removes it</div>Which step does the most repeating? Repeated membership checks want a hash set. Repeated smallest-so-far wants a heap. Sorted data invites two pointers or binary search. This one question is most of algorithm design.</div></div>
+  <div class="step"><div class="n">5</div><div class="b"><div class="t">Now write the code</div>If you did the steps above, the code is you writing down a plan you already have.</div></div>
+  <div class="step"><div class="n">6</div><div class="b"><div class="t">Test the corners</div>Empty input, one element, all duplicates, negatives, the largest allowed size. Most bugs live here.</div></div>
+  <div class="step"><div class="n">7</div><div class="b"><div class="t">State the final time and space cost</div>If it is no better than the slow way, go back to step 4.</div></div>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="section" id="s8">
+  <h2 class="sec"><span class="num">8</span>The 18 topics explained</h2>
+  <p class="lead">What each idea is, when a problem is hinting at it and the mistakes beginners make. These teach the pattern in general. Working out which problem uses which is the exercise, so no problem names here.</p>
+
+  <div class="primer"><div class="ph" style="background:#4338ca">&#128451;&#65039; &nbsp;Arrays &amp; Hashing</div><div class="pb">
+    <p>An array stores items in a row, so reading the item at a known spot is instant (O(1)). A hash table (a <code>dict</code> or <code>set</code>) stores items by a key so that on average adding, finding and removing a key are all instant too. That turns "have I seen this before" from a slow scan into a one-step check.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>You keep scanning the same data, counting how often things appear, testing membership fast or removing duplicates.</p></div>
+      <div><span class="mini">Speed</span><p>Set and dict lookups are O(1) on average. The same check on a list is a slow O(n).</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Using a list for repeated membership tests. Changing a dict while looping over it. Forgetting that heavy key collisions can make it slow.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#0891b2">&#8596;&#65039; &nbsp;Two Pointers</div><div class="pb">
+    <p>Walk through a sequence with two positions instead of one. They often start at opposite ends and move toward each other, or start together and move at different speeds. Moving one pointer can rule out many options at once, usually on sorted data.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>The data is sorted and you want a pair or triple with some property, or you compare the front against the back, or rearrange in place.</p></div>
+      <div><span class="mini">Speed</span><p>One sweep, O(n) time and O(1) extra space.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Off-by-one on the stopping condition. Moving the wrong pointer. Forgetting the data has to be sorted for many versions.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#4338ca">&#129695; &nbsp;Sliding Window</div><div class="pb">
+    <p>A range inside a sequence, marked by a left and right edge, that grows and shrinks as you scan. Instead of re-checking a whole range each time, you update a running summary as items enter on the right and leave on the left.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>You want the longest or shortest run of <i>adjacent</i> items with some property.</p></div>
+      <div><span class="mini">Speed</span><p>O(n): each item enters the window once and leaves once.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Recomputing the window from scratch each step (quietly O(n&sup2;)). Shrinking with the wrong condition. Recording the answer at the wrong moment.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#0891b2">&#129371; &nbsp;Stack</div><div class="pb">
+    <p>A pile where you add and remove only from the top: last in, first out, like a stack of plates. Adding, removing and peeking at the top are all O(1). Useful when the most recent unfinished thing is the one you need next.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>Matching or nesting (brackets, tags), needing the most recent item, or undo behaviour.</p></div>
+      <div><span class="mini">Speed</span><p>Push, pop and peek are each O(1).</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Popping an empty stack. Forgetting items still left at the end. Using a stack when order does not actually matter.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#4338ca">&#128269; &nbsp;Binary Search</div><div class="pb">
+    <p>Find a value in sorted data by cutting the range in half each step: check the middle, throw away the half that cannot hold the answer. A million items take about twenty steps (O(log n)). The same halving works to find the smallest answer that passes a yes/no test.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>The data is sorted, or you can phrase the goal as "smallest value for which this test passes".</p></div>
+      <div><span class="mini">Speed</span><p>O(log n) time, O(1) space.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Endless loops from updating the bounds wrong. Off-by-one on low and high. Confusion over whether an edge is included.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#0891b2">&#128279; &nbsp;Linked List</div><div class="pb">
+    <p>A chain of small boxes (nodes), each holding a value and a pointer to the next box. There is no jumping to the tenth item; you follow the chain (O(n)). But if you already hold a node, inserting or removing next to it is O(1), just a pointer rewrite.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>You rearrange links rather than values, reverse or reorder in place, or detect a loop.</p></div>
+      <div><span class="mini">Speed</span><p>Access by position O(n), insert or delete given the node O(1).</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Overwriting a node's next pointer before saving the rest of the chain. Mishandling the ends. Not using a dummy head node.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#4338ca">&#127795; &nbsp;Trees</div><div class="pb">
+    <p>Nodes in a hierarchy: one root at the top, each node holding children below. A binary tree gives each node at most two children. Visit nodes depth first (deep down one branch, then back up) or breadth first (one level at a time). Recursion fits, because each child is itself a smaller tree.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>The data is hierarchical, you do something at every node, or you care about paths from the root down.</p></div>
+      <div><span class="mini">Speed</span><p>Visiting every node is O(n); the tree height sets recursion depth.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Forgetting the empty-node base case. Mixing up visit orders. Deep recursion on a tall, skewed tree.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#0891b2">&#127794; &nbsp;Tries</div><div class="pb">
+    <p>A tree built from the characters of words. Each node is a letter, and a path from the root spells a prefix. Words sharing a prefix share early nodes, so it stores many strings compactly and answers prefix questions fast. Looking up a word costs O(L), its length, no matter how many words are stored.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>You are asked about prefixes, autocomplete, or many strings share leading characters.</p></div>
+      <div><span class="mini">Speed</span><p>Insert and search are O(L) in the word length.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Forgetting a marker for "a word ends here". Underestimating the memory it uses.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#4338ca">&#9968;&#65039; &nbsp;Heap / Priority Queue</div><div class="pb">
+    <p>A structure that always hands you the smallest (or largest) item fast. Python's <code>heapq</code> is a min heap: peeking at the smallest is O(1), while adding or removing the smallest is O(log n). A priority queue is a line where the most important item leaves first, whatever its arrival order.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>You repeatedly need the largest or smallest, want the "top k", merge ordered streams, or schedule by priority.</p></div>
+      <div><span class="mini">Speed</span><p>Peek O(1), add and remove O(log n).</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> <code>heapq</code> only does minimums (store negatives to fake a max heap). Sorting everything when you only needed the top few.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#0891b2">&#129513; &nbsp;Backtracking</div><div class="pb">
+    <p>Build an answer one choice at a time and abandon a partial answer the moment it cannot work, then undo the last choice and try another. It walks a tree of decisions. It is how you generate every arrangement that fits a rule.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>The problem asks for all combinations, all permutations, all subsets, or every arrangement that satisfies a rule.</p></div>
+      <div><span class="mini">Speed</span><p>Often exponential, so cutting off dead branches early is what makes it usable.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Not undoing a change after a branch. Storing a reference to a list that keeps changing instead of a copy. Skipping the pruning.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#4338ca">&#128376;&#65039; &nbsp;Graphs</div><div class="pb">
+    <p>Nodes joined by edges: a general web of connections (trees are a special case). Usually stored as a map from each node to its neighbours. Explore breadth first (spread out level by level, finds the fewest edges) or depth first (follow one path as far as it goes). A grid is often a graph in disguise.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>Networks, connectivity, reachability, dependencies, or a grid of connected cells.</p></div>
+      <div><span class="mini">Speed</span><p>Both searches cost O(V + E), nodes plus edges.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Forgetting a visited set and looping forever. Treating a one-way graph as two-way. Building the neighbour map wrong.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#0891b2">&#128506;&#65039; &nbsp;Advanced Graphs</div><div class="pb">
+    <p>The named algorithms for harder graph questions. Cheapest path with weighted edges uses Dijkstra (expand the closest unfinished node with a heap). Cheapest wiring to connect everything uses a minimum spanning tree. Ordering steps with dependencies uses topological sort. Tracking which nodes are grouped uses union-find.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>Edges carry weights, you need the minimum connecting set, you must order dependent steps, or you keep merging groups.</p></div>
+      <div><span class="mini">Speed</span><p>Dijkstra about O(E log V); union-find nearly O(1) per operation.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Dijkstra with negative weights (it cannot). Skipping the priority queue. Union-find without path shortening.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#4338ca">&#128200; &nbsp;1-D Dynamic Programming</div><div class="pb">
+    <p>Solve a big problem by solving smaller versions and saving each answer so it is never computed twice. It fits when the same smaller problems keep reappearing and the best overall answer is built from best answers to the parts. In 1-D, each smaller problem is labelled by one number, so answers live in a simple list.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>You want a count of ways, or a min/max cost, and each step is a choice that leads to a smaller version of the same problem.</p></div>
+      <div><span class="mini">Speed</span><p>Number of subproblems times the work each does, often O(n).</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Wrong starting values. Filling the list in an order that needs an answer you have not computed yet. Sizing off by one.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#0891b2">&#129518; &nbsp;2-D Dynamic Programming</div><div class="pb">
+    <p>The same idea, but each smaller problem now needs two numbers to describe it, so the answers live in a grid. That happens when you compare two sequences at once, move through a grid, or track a range with a start and an end. You fill the grid cell by cell, each from cells already filled.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>Two sequences compared together, paths across a grid, or a subproblem that needs both a start and an end.</p></div>
+      <div><span class="mini">Speed</span><p>O(n &times; m) for a grid of n by m cells.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Wrong grid dimensions. Filling in an order that needs cells not ready yet. Mixing up row and column.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#4338ca">&#127919; &nbsp;Greedy</div><div class="pb">
+    <p>Make the choice that looks best right now at every step and never reconsider, hoping local best adds up to global best. Fast and simple, but only correct when the problem has a property that guarantees it. Often you sort first, then make one obvious pick at a time.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>You maximise or minimise something and there is a natural order to process in, such as by size or end time.</p></div>
+      <div><span class="mini">Speed</span><p>Usually O(n log n), the cost of the sort.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Assuming greedy works without checking. The wrong sort key. Test it against a slow brute force on tiny inputs first.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#0891b2">&#128197; &nbsp;Intervals</div><div class="pb">
+    <p>A range with a start and an end, like a meeting from 2 to 3. Most interval problems sort the ranges (by start, or sometimes by end) and then sweep through once, comparing each to the previous. Sorting brings ranges that interact next to each other.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>Meetings, bookings, calendars, overlaps, or merging ranges into fewer.</p></div>
+      <div><span class="mini">Speed</span><p>Sort O(n log n), then an O(n) sweep.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> The wrong sort key. An off-by-one on the overlap test (do touching ranges count?). Forgetting to sort.</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#4338ca">&#128208; &nbsp;Math &amp; Geometry</div><div class="pb">
+    <p>A grab bag: digits of a number, remainders, greatest common divisors, rotating or scanning a matrix, simple coordinate geometry. No single structure. The common thread is careful handling of arithmetic and indices, where a small slip gives a wrong answer.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>The problem is about the digits of a number, remainders, or moving around a grid by position.</p></div>
+      <div><span class="mini">Speed</span><p>Varies by task, so reason about each one directly.</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> Off-by-one when indexing a matrix. Comparing floating point numbers with exact equality. Overflow (rare in Python, a habit worth keeping).</div>
+  </div></div>
+
+  <div class="primer"><div class="ph" style="background:#0891b2">&#128290; &nbsp;Bit Manipulation</div><div class="pb">
+    <p>Every integer is a row of bits, and you can act on them directly with AND, OR, XOR, NOT and shifts. Fast, and sometimes solves a problem with no extra memory. XOR is the workhorse: a value XORed with itself is 0 and with 0 is unchanged, so pairs cancel. One integer can also stand in for a small set, one bit per member.</p>
+    <div class="row2">
+      <div><span class="mini">Reach for it when</span><p>The problem hints at no extra space, asks about odd/even counts, or smells like an XOR cancellation.</p></div>
+      <div><span class="mini">Speed</span><p>Each bit operation is O(1).</p></div>
+    </div>
+    <div class="watch"><span class="mini">Watch out</span> The sign bit on negatives. Operator precedence (wrap bit operations in parentheses). Confusing bitwise <code>&amp;</code> with logical <code>and</code>.</div>
+  </div></div>
+</section>
+
+<!-- ============ 9 ============ -->
+<section class="section" id="s9">
+  <h2 class="sec"><span class="num">9</span>Getting unstuck</h2>
+  <p class="lead">Hints come in levels. You get one level at a time, in order, and never a jump to the answer.</p>
+
+  <div class="cardrow">
+    <div class="card" style="border-top-color:#93c5fd"><h4>Level 1: a question</h4>A nudge that does not point anywhere, such as "what would the slow version cost?" or "what are you scanning more than once?"</div>
+    <div class="card" style="border-top-color:#60a5fa"><h4>Level 2: a concept</h4>Points at the relevant line or names a general idea ("think about what you could precompute"), not the algorithm.</div>
+    <div class="card" style="border-top-color:#2563eb"><h4>Level 3: the idea in words</h4>Describes the idea in plain words, no code and no pseudocode. This is the most you get.</div>
+  </div>
+  <p>Still stuck after level 3? The help continues as more questions, never as a solution.</p>
+
+  <div class="callout note">
+    <div class="h">&#128221; Write down how many hint levels you used (0 to 3)</div>
+    This is not busywork. The hint count feeds the revisit schedule: any problem where you needed a hint comes back sooner, because needing a hint means you have not fully learned it. Being honest here is what keeps the spaced repetition useful.
+  </div>
+
+  <div class="callout tip">
+    <div class="h">&#128161; Algorithm help is rationed. Python help is free.</div>
+    Finding the idea is the exercise, so it comes through the hint levels. But the Python <i>language</i> is not the exercise: a syntax error, a scoping surprise, a shadowed builtin. Ask about those directly and get a full answer, then save it with <code>/gotcha</code> so you know it next time.
+  </div>
+</section>
+
+<!-- ============ 10 ============ -->
+<section class="section" id="s10">
+  <h2 class="sec"><span class="num">10</span>When something breaks</h2>
+  <p class="lead">The common snags and what to do about each.</p>
+
+  <div class="cardrow">
+    <div class="card"><h4>The hook blocked my commit</h4>A solution file is not finished. Read the bullet list it printed, fill the named notes and make your tests pass, then commit again. Do not use <code>--no-verify</code>.</div>
+    <div class="card"><h4>Imports fail when I run a file</h4>You are running from the wrong folder. Run from the top of the repo: <code>python3 arrays-hashing/0001-two-sum.py</code>.</div>
+  </div>
+  <div class="cardrow">
+    <div class="card"><h4>progress.py says the README is stale</h4>Normal after you finish a problem. Run <code>python3 scripts/progress.py</code> (without <code>--check</code>) and commit the updated README.</div>
+    <div class="card"><h4>check_file lists TODO fields</h4>Your notes are not all filled in. Fill every field (hint count 0 to 3, a real date, revisit yes or no). The easy way is <code>/done</code>, which asks you for each.</div>
+  </div>
+  <div class="callout warn">
+    <div class="h">&#9888;&#65039; It passes here but fails on LeetCode</div>
+    The official grader found a case yours did not. Read which case failed, add it as a new assert in your file, watch it fail there too, then fix your code until it passes again. Now you have a fixed solution and a permanent test for the case that caught you.
+  </div>
+
+  <div class="callout tip">
+    <div class="h">&#9989; Start here</div>
+    New to the repo? Read section 1 and section 3, then follow the seven steps in section 5 for your first problem: <code>/new arrays-hashing 1 two-sum</code>.
+  </div>
+</section>
+
+</body>
+</html>
