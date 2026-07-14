@@ -1,0 +1,85 @@
+/* visual-pdf reference component library.
+   Copy the pieces you need into your document's own <style> block so the HTML
+   stays self-contained and reproducible. Tuned for WeasyPrint on Letter paper. */
+
+:root {
+  --accent: #4338ca;      /* main brand colour */
+  --accent-2: #0891b2;    /* secondary, for gradients */
+  --ink: #1f2937;         /* body text */
+  --muted: #6b7280;       /* secondary text */
+  --line: #e5e7eb;        /* hairlines */
+  --tip: #16a34a; --tip-bg: #ecfdf5;
+  --warn: #d97706; --warn-bg: #fffbeb;
+  --note: #2563eb; --note-bg: #eff6ff;
+  --rule: #dc2626; --rule-bg: #fef2f2;
+  --easy: #16a34a; --med: #d97706; --hard: #dc2626;
+  --code-bg: #f3f4f6;
+}
+
+/* ---- page setup ---- */
+@page {
+  size: letter;
+  margin: 1.7cm 1.9cm 2cm 1.9cm;
+  @bottom-center { content: counter(page); color: #9ca3af; font: 9pt sans-serif; }
+  @bottom-left  { content: string(doctitle); color: #9ca3af; font: 8.5pt sans-serif; }
+}
+@page cover { margin: 0; @bottom-center { content: none } @bottom-left { content: none } }
+
+body { font-family: "Helvetica Neue", Arial, sans-serif; color: var(--ink);
+       font-size: 10.5pt; line-height: 1.5; }
+h1 { string-set: doctitle content(); }
+
+/* ---- cover ---- */
+.cover { page: cover; height: 100vh; box-sizing: border-box;
+         background: linear-gradient(135deg, var(--accent), var(--accent-2));
+         color: #fff; padding: 4cm 2.4cm; }
+.cover h1 { font-size: 34pt; margin: 0 0 .3cm 0; }
+.cover .sub { font-size: 14pt; opacity: .92; }
+
+/* ---- section headers ---- */
+.section-num { display: inline-block; width: 1.15em; height: 1.15em; line-height: 1.15em;
+               text-align: center; background: var(--accent); color: #fff;
+               border-radius: 6px; font-size: .8em; margin-right: .4em; }
+
+/* ---- callouts ---- */
+.callout { border-radius: 8px; padding: 11px 14px; margin: 12px 0;
+           border-left: 5px solid var(--muted); background: #f9fafb; }
+.callout .h { font-weight: 700; margin-bottom: 3px; }
+.callout.tip  { border-color: var(--tip);  background: var(--tip-bg); }
+.callout.warn { border-color: var(--warn); background: var(--warn-bg); }
+.callout.note { border-color: var(--note); background: var(--note-bg); }
+.callout.rule { border-color: var(--rule); background: var(--rule-bg); }
+
+/* ---- cards ---- */
+.cardrow { display: flex; gap: 12px; margin: 12px 0; }
+.card { flex: 1; border: 1px solid var(--line); border-top: 4px solid var(--accent);
+        border-radius: 8px; padding: 10px 12px; background: #fff; }
+.card h4 { margin: 0 0 4px 0; color: var(--accent); }
+
+/* ---- badges / pills ---- */
+.badge { display: inline-block; padding: 1px 9px; border-radius: 10px; color: #fff;
+         font-size: 8.5pt; font-weight: 700; vertical-align: middle; }
+.badge.easy { background: var(--easy) } .badge.med { background: var(--med) }
+.badge.hard { background: var(--hard) }
+
+/* ---- numbered steps ---- */
+.step { display: flex; gap: 12px; margin: 10px 0; }
+.step .n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+           background: var(--accent); color: #fff; font-weight: 700;
+           text-align: center; line-height: 26px; }
+
+/* ---- code ---- */
+.codebox { background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px;
+           padding: 9px 12px; font-family: "SF Mono", Menlo, Consolas, monospace;
+           font-size: 8.7pt; line-height: 1.45; white-space: pre-wrap; }
+code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 9pt;
+       background: var(--code-bg); padding: 0 3px; border-radius: 3px; }
+
+/* ---- table of contents ---- */
+.toc a { text-decoration: none; color: var(--ink); }
+.toc .l0 { font-weight: 700; }
+.toc .l1 { color: var(--muted); padding-left: 1.2em; font-size: 9.8pt; }
+.toc a::after { content: target-counter(attr(href), page); float: right; color: var(--muted); }
+
+/* start a block on a fresh page */
+.page-break { break-before: page; }
