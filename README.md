@@ -13,9 +13,35 @@ The problem list below was verified against neetcode.io/practice on 2026-07-14.
 
 ## How to use
 
-<!-- HOWTO:BEGIN -->
-_This section is filled in once the tooling exists (see step 9)._
-<!-- HOWTO:END -->
+**Daily loop**
+1. Read the next problem **on LeetCode yourself** — never paste it here for a solution.
+2. `/new <category> <number> <slug>` — scaffold the file and start your timer.
+3. Solve it by hand within the limit: **25 min Easy, 40 min Medium/Hard**.
+4. Stuck? `/hint <file>` — one graduated hint at a time; record how many you used.
+5. `/review <file>` — adds edge-case tests and questions your complexity claims.
+6. `/done <file>` — fill in your notes, run the honesty gate, and commit.
+
+**Weekly loop**
+- `/redo` twice — redo the two oldest problems in the revisit queue from scratch.
+- `/quiz [category]` — pattern recall for each category you've finished.
+
+**Slash commands** (`.claude/commands/`)
+- `/new` — scaffold a problem file and state the time limit.
+- `/hint` — the next graduated hint; never the algorithm.
+- `/review` — edge-case tests plus a Socratic complexity check.
+- `/done` — fill docstring notes, validate, commit.
+- `/redo` — redo the oldest due problem, then diff against the original.
+- `/quiz` — 5 recall questions drawn only from solved problems.
+- `/gotcha` — append a Python gotcha to [python-gotchas.md](python-gotchas.md).
+
+**Scripts** (`scripts/`, standard library only)
+- `new_problem.py <category> <number> <slug>` — copy the template in, prefilled.
+- `progress.py [--check]` — regenerate the Progress + Revisit sections below.
+- `check_file.py <file>` — the honesty gate: notes filled and valid, asserts pass.
+- `flashcards.py [--out FILE]` — export solved problems to an Anki CSV.
+- `install_hooks.py` — install the pre-commit honesty-gate hook (run once).
+
+Run solution files from the repo root: `python3 arrays-hashing/0001-two-sum.py`.
 
 ## Progress
 
