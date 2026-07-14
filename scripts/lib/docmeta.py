@@ -1,4 +1,4 @@
-"""Shared helpers for the tooling scripts.
+"""Docstring parsing and solution-file running for the tooling scripts.
 
 Not a solution file and not scanned as one. Parses the metadata docstring at
 the top of a solution file and runs solution files as subprocesses. Contains
@@ -40,8 +40,8 @@ TODO = "TODO"
 
 
 def repo_root():
-    """Repo root is the parent of the scripts/ directory."""
-    return pathlib.Path(__file__).resolve().parents[1]
+    """Repo root is two levels up from this file (scripts/lib/ -> repo)."""
+    return pathlib.Path(__file__).resolve().parents[2]
 
 
 def read_docstring(path):

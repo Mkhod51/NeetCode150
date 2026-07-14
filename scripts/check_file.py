@@ -14,8 +14,7 @@ import argparse
 import pathlib
 import sys
 
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-import _docmeta as meta  # noqa: E402
+from lib import docmeta as meta
 
 
 def check(path):

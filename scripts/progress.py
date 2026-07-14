@@ -20,12 +20,10 @@ Usage:
 """
 import argparse
 import datetime
-import pathlib
 import sys
 
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-import neetcode150 as nc  # noqa: E402
-import _docmeta as meta  # noqa: E402
+from lib import docmeta as meta
+from lib import neetcode150 as nc
 
 PROGRESS_BEGIN = "<!-- PROGRESS:BEGIN -->"
 PROGRESS_END = "<!-- PROGRESS:END -->"

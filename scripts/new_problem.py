@@ -15,13 +15,10 @@ writes solution code or approach hints, and refuses to overwrite an existing
 file. Standard library only.
 """
 import argparse
-import pathlib
 import re
-import sys
 
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-import neetcode150 as nc  # noqa: E402
-import _docmeta as meta  # noqa: E402
+from lib import docmeta as meta
+from lib import neetcode150 as nc
 
 TEMPLATE = "templates/problem-template.py"
 
