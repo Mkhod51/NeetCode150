@@ -41,6 +41,13 @@ The problem list below was verified against neetcode.io/practice on 2026-07-14.
 - `flashcards.py [--out FILE]` — export solved problems to an Anki CSV.
 - `install_hooks.py` — install the pre-commit honesty-gate hook (run once).
 
+Internal shared code (the canonical problem list, docstring parsing) lives in
+`scripts/lib/` — it is imported by the scripts above, never run directly.
+
+**CI** ([.github/workflows/ci.yml](.github/workflows/ci.yml)): every push runs
+each solution file and fails if any exits non-zero or the Progress section
+below is stale (`progress.py --check`).
+
 Run solution files from the repo root: `python3 arrays-hashing/0001-two-sum.py`.
 
 ## Progress
