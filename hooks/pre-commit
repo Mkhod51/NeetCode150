@@ -8,12 +8,19 @@
 #
 # Installed into .git/hooks/pre-commit by scripts/install_hooks.py.
 
-CATEGORIES="arrays-hashing two-pointers sliding-window stack binary-search linked-list trees tries heap-priority-queue backtracking graphs advanced-graphs one-d-dp two-d-dp greedy intervals math-geometry bit-manipulation"
-
 if command -v python3 >/dev/null 2>&1; then
   PY=python3
 else
   PY=python
+fi
+
+# Category folders come from the canonical list module — single source of
+# truth shared with the tooling and CI. Fail CLOSED: if the list cannot be
+# derived, block the commit rather than silently checking nothing.
+CATEGORIES=$("$PY" -c 'import sys; sys.path.insert(0, "scripts"); from lib.neetcode150 import CATEGORY_ORDER; print(" ".join(f for f, _ in CATEGORY_ORDER))') || CATEGORIES=""
+if [ -z "$CATEGORIES" ]; then
+  echo "pre-commit: could not derive category folders from scripts/lib/neetcode150.py — blocking commit." >&2
+  exit 1
 fi
 
 staged=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$' || true)

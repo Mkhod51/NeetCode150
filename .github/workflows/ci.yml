@@ -18,7 +18,12 @@ jobs:
       - name: Run every solution file in the category folders
         run: |
           set -u
-          CATEGORIES="arrays-hashing two-pointers sliding-window stack binary-search linked-list trees tries heap-priority-queue backtracking graphs advanced-graphs one-d-dp two-d-dp greedy intervals math-geometry bit-manipulation"
+          # Single source of truth for category folders: the canonical module.
+          CATEGORIES=$(python -c 'import sys; sys.path.insert(0, "scripts"); from lib.neetcode150 import CATEGORY_ORDER; print(" ".join(f for f, _ in CATEGORY_ORDER))')
+          if [ -z "$CATEGORIES" ]; then
+            echo "::error::could not derive category folders from scripts/lib/neetcode150.py"
+            exit 1
+          fi
           fail=0
           for c in $CATEGORIES; do
             for f in "$c"/*.py; do
