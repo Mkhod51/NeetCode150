@@ -18,6 +18,8 @@ import sys
 _ANNOTATION = re.compile(r"\s{2,}\(.*\)\s*$")
 
 # Canonical docstring field labels, in the order the template lists them.
+# This list and the "Label: value" line format are a FROZEN parsing contract:
+# every existing and future solution file depends on it. Do not change it.
 FIELDS = [
     "Problem",
     "Link",
@@ -32,9 +34,6 @@ FIELDS = [
     "Date solved",
     "Revisit",
 ]
-
-# Fields new_problem.py pre-fills; the rest stay "TODO" until the human solves.
-PREFILLED_FIELDS = ["Problem", "Link", "Category", "Difficulty"]
 
 TODO = "TODO"
 
@@ -75,20 +74,68 @@ def parse_fields(path):
     return found
 
 
-def missing_or_todo(fields):
-    """Return the list of canonical fields that are absent or still 'TODO'."""
-    bad = []
+def field_failures(fields):
+    """Validate parsed docstring fields; return failure messages (empty == valid).
+
+    The single source of the honesty gate's field rules: every field present
+    and not TODO, 'Hints used' an integer 0-3, 'Date solved' a real
+    YYYY-MM-DD date, 'Revisit' yes or no.
+    """
+    failures = []
     for field in FIELDS:
         value = fields.get(field)
-        if value is None or value == "" or TODO in value:
-            bad.append(field)
-    return bad
+        if value is None:
+            failures.append("missing docstring field: '{}'".format(field))
+        elif value == "" or TODO in value:
+            failures.append("field '{}' is still TODO/empty".format(field))
+
+    hints = fields.get("Hints used", "")
+    if hints and TODO not in hints:
+        try:
+            n = int(hints)
+            if not 0 <= n <= 3:
+                failures.append("'Hints used' must be 0-3, got {!r}".format(hints))
+        except ValueError:
+            failures.append(
+                "'Hints used' must be an integer 0-3, got {!r}".format(hints))
+
+    date_val = fields.get("Date solved", "")
+    if date_val and TODO not in date_val:
+        if parse_date(date_val) is None:
+            failures.append(
+                "'Date solved' must be YYYY-MM-DD, got {!r}".format(date_val))
+
+    revisit = fields.get("Revisit", "")
+    if revisit and TODO not in revisit:
+        if revisit.strip().lower() not in ("yes", "no"):
+            failures.append(
+                "'Revisit' must be 'yes' or 'no', got {!r}".format(revisit))
+
+    return failures
+
+
+def validate(path):
+    """Full honesty-gate check: fields valid AND the file runs clean.
+
+    Returns a list of failure messages; empty means the file passes.
+    """
+    failures = field_failures(parse_fields(path))
+    code, output = run_file(path)
+    if code != 0:
+        detail = output.strip() or "(no output)"
+        failures.append("file did not run clean (exit {}):\n    {}".format(
+            code, detail.replace("\n", "\n    ")))
+    return failures
 
 
 def is_solved(path):
-    """A file is 'solved' when no field is missing/TODO and it runs clean."""
-    fields = parse_fields(path)
-    if missing_or_todo(fields):
+    """A file is 'solved' when it would pass the honesty gate (see validate).
+
+    Same rules as validate(); skips the subprocess run when the fields already
+    fail, so scanning many unfinished files stays fast and never executes a
+    half-written solution.
+    """
+    if field_failures(parse_fields(path)):
         return False
     code, _ = run_file(path)
     return code == 0
