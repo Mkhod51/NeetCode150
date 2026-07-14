@@ -20,18 +20,24 @@ from lib import neetcode150 as nc
 
 
 def solved_cards():
-    """Yield (front, back) tuples for every solved problem, in README order."""
-    for p in nc.problems():
-        path = meta.repo_root() / p["category"] / p["filename"]
-        if not path.is_file() or not meta.is_solved(path):
-            continue
-        fields = meta.parse_fields(path)
-        problem = fields.get("Problem", p["title"])
-        pattern = fields.get("Pattern", "")
-        insight = fields.get("Key insight", "")
-        front = "{}\n\nWhich pattern applies, and why?".format(problem)
-        back = "Pattern: {}\nKey insight: {}".format(pattern, insight)
-        yield front, back
+    """Yield (front, back) tuples for every solved file, in README order.
+
+    Uses the same discovery as progress.py: the canonical 150 plus any
+    non-canonical files sitting in a category folder.
+    """
+    for folder, _, items in nc.problems_by_category():
+        paths = [meta.repo_root() / folder / p["filename"] for p in items]
+        paths += meta.extra_files(folder)
+        for path in paths:
+            if not path.is_file() or not meta.is_solved(path):
+                continue
+            fields = meta.parse_fields(path)
+            problem = fields.get("Problem") or path.stem
+            pattern = fields.get("Pattern", "")
+            insight = fields.get("Key insight", "")
+            front = "{}\n\nWhich pattern applies, and why?".format(problem)
+            back = "Pattern: {}\nKey insight: {}".format(pattern, insight)
+            yield front, back
 
 
 def main(argv=None):

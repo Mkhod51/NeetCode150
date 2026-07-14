@@ -11,6 +11,8 @@ import re
 import subprocess
 import sys
 
+from . import neetcode150
+
 # Trailing template annotation like "2        (must end up as an integer 0-3)".
 # Real values never contain two-or-more spaces immediately before a "(", so this
 # only strips the alignment notes the template ships with — not titles such as
@@ -167,3 +169,19 @@ def parse_date(value):
         return datetime.datetime.strptime(value.strip(), "%Y-%m-%d").date()
     except (ValueError, AttributeError):
         return None
+
+
+def extra_files(folder):
+    """Return non-canonical *.py files present in a category folder, sorted.
+
+    The shared discovery rule: anything in a category folder that is not one
+    of the canonical 150 filenames still counts as a solution file (progress
+    and flashcards both use this).
+    """
+    root = repo_root() / folder
+    if not root.is_dir():
+        return []
+    canon = {p["filename"] for p in neetcode150.problems()
+             if p["category"] == folder}
+    return sorted((f for f in root.glob("*.py") if f.name not in canon),
+                  key=lambda f: f.name)

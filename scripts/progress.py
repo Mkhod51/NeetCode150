@@ -39,21 +39,6 @@ def progress_bar(solved, total):
     return "█" * filled + "-" * (BAR_WIDTH - filled)
 
 
-def canonical_filenames():
-    """Set of '{folder}/{filename}' strings for the canonical 150."""
-    return {"{}/{}".format(p["category"], p["filename"]) for p in nc.problems()}
-
-
-def extra_files(folder):
-    """Return non-canonical *.py files present in a category folder, sorted."""
-    root = meta.repo_root() / folder
-    if not root.is_dir():
-        return []
-    canon = {p["filename"] for p in nc.problems() if p["category"] == folder}
-    extras = [f for f in root.glob("*.py") if f.name not in canon]
-    return sorted(extras, key=lambda f: f.name)
-
-
 def _extra_meta(path):
     """Derive (number, title, difficulty) for a non-canonical file."""
     fields = meta.parse_fields(path)
@@ -91,7 +76,7 @@ def gather():
                 "path": "{}/{}".format(p["category"], p["filename"]),
                 "solved": solved,
             })
-        for f in extra_files(folder):
+        for f in meta.extra_files(folder):
             solved = meta.is_solved(f)
             number, title, difficulty = _extra_meta(f)
             rows.append({
