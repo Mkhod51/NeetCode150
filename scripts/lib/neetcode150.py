@@ -6,8 +6,9 @@ LeetCode problem numbers and canonical titles are mapped from those slugs.
 
 This module contains NO solution code and NO approach hints — only public
 metadata (number, title, difficulty, slug). scripts/progress.py renders the
-README checklist from this list; scripts/new_problem.py reads difficulty back
-out of the generated README.
+README checklist from this list, scripts/new_problem.py pre-fills titles and
+difficulties from it, and the pre-commit hook and CI derive the category
+folder list from CATEGORY_ORDER.
 
 If neetcode.io changes the list, update the tuples below and re-run
 `python scripts/progress.py` to regenerate the README.

@@ -10,36 +10,26 @@ Example:
 
 Copies templates/problem-template.py into the category folder as
 {NNNN}-{slug}.py, pre-filling only the Problem / Link / Category / Difficulty
-fields (difficulty and title are read from the README checklist). It never
-writes solution code or approach hints, and refuses to overwrite an existing
-file. Standard library only.
+fields (title and difficulty come from the canonical list in
+lib/neetcode150.py). It never writes solution code or approach hints, and
+refuses to overwrite an existing file. Standard library only.
 """
 import argparse
-import re
 
 from lib import docmeta as meta
 from lib import neetcode150 as nc
 
 TEMPLATE = "templates/problem-template.py"
 
-# Matches a README checklist line:
-#   - [ ] 0001 Two Sum (Easy) — arrays-hashing/0001-two-sum.py
-_CHECKLIST = re.compile(
-    r"^- \[.\] (?P<num>\d{4}) (?P<title>.+) \((?P<diff>Easy|Medium|Hard)\) — (?P<path>\S+)\s*$")
 
+def lookup_canonical(number):
+    """Return (title, difficulty) for a LeetCode number from the canonical list.
 
-def lookup_from_readme(number):
-    """Return (title, difficulty) for a zero-padded number from the README.
-
-    Returns (None, None) if the number is not in the checklist.
+    Returns (None, None) if the number is not one of the NeetCode 150.
     """
-    readme = meta.repo_root() / "README.md"
-    if not readme.is_file():
-        return None, None
-    for line in readme.read_text(encoding="utf-8").splitlines():
-        m = _CHECKLIST.match(line)
-        if m and m.group("num") == number:
-            return m.group("title"), m.group("diff")
+    for p in nc.problems():
+        if p["number"] == number:
+            return p["title"], p["difficulty"]
     return None, None
 
 
@@ -69,9 +59,10 @@ def main(argv=None):
             args.category, ", ".join(valid)))
 
     try:
-        number = "{:04d}".format(int(args.number))
+        number_int = int(args.number)
     except ValueError:
         parser.error("number must be an integer, got '{}'".format(args.number))
+    number = "{:04d}".format(number_int)
 
     slug = args.slug.strip().lower()
     filename = "{}-{}.py".format(number, slug)
@@ -80,10 +71,10 @@ def main(argv=None):
         parser.error("refusing to overwrite existing file: {}".format(
             target.relative_to(meta.repo_root())))
 
-    title, difficulty = lookup_from_readme(number)
+    title, difficulty = lookup_canonical(number_int)
     if title is None:
         title = title_from_slug(slug)
-        print("note: {} not found in README checklist; "
+        print("note: {} is not in the canonical NeetCode 150 list; "
               "using derived title and leaving Difficulty as TODO.".format(number))
     if difficulty is None:
         difficulty = "TODO"
