@@ -1,0 +1,41 @@
+#!/bin/sh
+# Guardrail hook for the NeetCode 150 learning repo.
+#
+# Runs the honesty gate (scripts/check_file.py) on every staged solution file
+# that lives in a category folder, and blocks the commit if any fails. It does
+# NOT run on template/, scripts/, helpers/, or redo/ — those are tooling and
+# scratch space, not exercises.
+#
+# Installed into .git/hooks/pre-commit by scripts/install_hooks.py.
+
+CATEGORIES="arrays-hashing two-pointers sliding-window stack binary-search linked-list trees tries heap-priority-queue backtracking graphs advanced-graphs one-d-dp two-d-dp greedy intervals math-geometry bit-manipulation"
+
+if command -v python3 >/dev/null 2>&1; then
+  PY=python3
+else
+  PY=python
+fi
+
+staged=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$' || true)
+
+fail=0
+for f in $staged; do
+  top=${f%%/*}
+  case " $CATEGORIES " in
+    *" $top "*)
+      if [ -f "$f" ]; then
+        "$PY" scripts/check_file.py "$f" || fail=1
+      fi
+      ;;
+  esac
+done
+
+if [ "$fail" -ne 0 ]; then
+  echo ""
+  echo "pre-commit: one or more solution files failed the honesty gate."
+  echo "Fill in the docstring fields and make the asserts pass, then re-commit."
+  echo "(Emergency bypass, discouraged: git commit --no-verify)"
+  exit 1
+fi
+
+exit 0
