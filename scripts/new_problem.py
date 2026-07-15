@@ -33,6 +33,20 @@ def lookup_canonical(number):
     return None, None
 
 
+def render_template(number, title, slug, category_folder, difficulty):
+    """Return the filled template text for one problem (writes nothing).
+
+    ``number`` is the zero-padded string, e.g. "0271". Only the four
+    pre-fill fields are set; the rest stay TODO. No solution code.
+    """
+    template_text = (meta.repo_root() / TEMPLATE).read_text(encoding="utf-8")
+    return (template_text
+            .replace("{NUMBER} {TITLE}", "{} {}".format(number, title))
+            .replace("{LEETCODE_URL}", "https://leetcode.com/problems/{}/".format(slug))
+            .replace("{CATEGORY}", nc.display_name(category_folder))
+            .replace("{DIFFICULTY}", difficulty))
+
+
 def title_from_slug(slug):
     return slug.replace("-", " ").title()
 
@@ -79,12 +93,7 @@ def main(argv=None):
     if difficulty is None:
         difficulty = "TODO"
 
-    template_text = (meta.repo_root() / TEMPLATE).read_text(encoding="utf-8")
-    filled = (template_text
-              .replace("{NUMBER} {TITLE}", "{} {}".format(number, title))
-              .replace("{LEETCODE_URL}", "https://leetcode.com/problems/{}/".format(slug))
-              .replace("{CATEGORY}", nc.display_name(args.category))
-              .replace("{DIFFICULTY}", difficulty))
+    filled = render_template(number, title, slug, args.category, difficulty)
 
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(filled, encoding="utf-8")
