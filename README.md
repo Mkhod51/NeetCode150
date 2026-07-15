@@ -16,10 +16,13 @@ The problem list below was verified against neetcode.io/practice on 2026-07-14.
 **Daily loop**
 1. Read the next problem **on LeetCode yourself** — never paste it here for a solution.
 2. `/new <category> <number> <slug>` — scaffold the file and start your timer.
-3. Solve it by hand within the limit: **25 min Easy, 40 min Medium/Hard**.
+3. Paste the starter signature from NeetCode/LeetCode into the `Solution` class,
+   then solve it by hand within the limit: **25 min Easy, 40 min Medium/Hard**.
 4. Stuck? `/hint <file>` — one graduated hint at a time; record how many you used.
 5. `/review <file>` — adds edge-case tests and questions your complexity claims.
 6. `/done <file>` — fill in your notes, run the honesty gate, and commit.
+7. Paste your solution into LeetCode to submit, then `/complexity <file>` to
+   measure its running time and compare it against the optimal.
 
 **Weekly loop**
 - `/redo` twice — redo the two oldest problems in the revisit queue from scratch.
@@ -30,6 +33,7 @@ The problem list below was verified against neetcode.io/practice on 2026-07-14.
 - `/hint` — the next graduated hint; never the algorithm.
 - `/review` — edge-case tests plus a Socratic complexity check.
 - `/done` — fill docstring notes, validate, commit.
+- `/complexity` — for a **solved** file: measure its running time and compare to the optimal.
 - `/redo` — redo the oldest due problem, then diff against the original.
 - `/quiz` — 5 recall questions drawn only from solved problems.
 - `/gotcha` — append a Python gotcha to [python-gotchas.md](python-gotchas.md).
@@ -38,6 +42,7 @@ The problem list below was verified against neetcode.io/practice on 2026-07-14.
 - `new_problem.py <category> <number> <slug>` — copy the template in, prefilled.
 - `progress.py [--check]` — regenerate the Progress + Revisit sections below.
 - `check_file.py <file>` — the honesty gate: notes filled and valid, asserts pass.
+- `benchmark.py <file>` — measure a solution's running time as input grows (needs a `bench()`).
 - `flashcards.py [--out FILE]` — export solved problems to an Anki CSV.
 - `install_hooks.py` — install the pre-commit honesty-gate hook (run once).
 
